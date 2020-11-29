@@ -36,8 +36,21 @@ def new_room(room):
 	with gzip.open(roomFile,'wb') as f:
 		pickle.dump(data,f)
 
+def del_room(room):
+	if not os.path.isfile(roomFile):
+		return ;
+	
+	#create new room
+	with gzip.open(roomFile,'rb') as f:
+		data = pickle.load(f)
 
-def new_word(room, word , score = 0):
+	data.pop(room)
+
+	with gzip.open(roomFile,'wb') as f:
+		pickle.dump(data,f)
+
+
+def new_word(word , score , room):
 	with gzip.open(roomFile,'rb') as f:
 		data = pickle.load(f)
 
@@ -47,7 +60,7 @@ def new_word(room, word , score = 0):
 	with gzip.open(roomFile,'wb') as f:
 		pickle.dump(data,f)
 
-def delete_word(room, word):
+def delete_word(word, room):
 	with gzip.open(roomFile,'rb') as f:
 		data = pickle.load(f)
 

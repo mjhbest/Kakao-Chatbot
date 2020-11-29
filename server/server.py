@@ -30,19 +30,38 @@ def newroom(room):
 	new_room(room)
 	return room
 
-#####단어 추가 모듈
+@app.route('/delroom/<room>')
+def delroom(room):
+	del_room(room)
+	return room
+
+#단어 관리 모듈
 @app.route('/newword/<word_data>', methods = ['GET'])
 def newword(word_data):
 	args = word_data.split();
-	if len(args) == 2 :
-		args.append(0)
-	new_word(args[0],args[1],args[2])
+	word = args[0]
+	score = args[1]
+	room = ""
+	for i in range(2,len(args)):
+		if(len(room)!=0):
+			room+= " "
+		room += args[i]
+
+	new_word(word,score,room)
 	return word_data
 
 @app.route('/delword/<word_data>', methods = ['GET'])
 def delword(word_data):
 	args = word_data.split();
-	delete_word(args[0],args[1])
+
+	word = args[0]
+	room = ""
+	for i in range(1,len(args)):
+		if(len(room)!=0):
+			room+= " "
+		room += args[i]
+
+	delete_word(word,room)
 	return word_data
 
 @app.route('/resetword/<word_data>', methods = ['GET'])
@@ -50,7 +69,7 @@ def resetword(word_data):
 	reset_word(word_data)
 	return word_data
 
-# 예시 모
+# 예시용 모듈
 @app.route('/userLogin', methods = ['POST'])
 def userLogin():
     user = request.get_json()

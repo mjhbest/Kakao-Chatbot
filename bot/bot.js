@@ -11,8 +11,10 @@ var bads = [];
 * (string) imageDB.getProfileBase64()
 * (string) packageName
 */
-const api_server = 'http://662578a443c3.ngrok.io';
+const api_server = 'http://e8a59214407f.ngrok.io';
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
+	var args = msg.split(' ');
+
 	if(msg=='hi'){
 		replier.reply("Hello! I'm chatbot!");
 	}
@@ -21,15 +23,39 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 		replier.reply(output);
 	}
 
+	
+	//방 목록 단어 관리
+
 	if(msg == '/시작'){
-		org.jsoup.Jsoup.connect(api_server + '/' +room).ignoreContentType(true).get().text();
+		org.jsoup.Jsoup.connect(api_server + '/newroom/' +room).ignoreContentType(true).get().text();
 		replier.reply("측정을 시작합니다");
 	}
 
-	if(msg.startsWith('/단어추가')){
-		org.jsoup.Jsoup.connect(api_server + '/' +room).ignoreContentType(true).get().text();
+	if(msg == '/종료'){
+		org.jsoup.Jsoup.connect(api_server + '/delroom/' +room).ignoreContentType(true).get().text();
+		replier.reply("측정을 종료합니다");
+	}
+
+	// 차단 단어 단어 관리
+	if(args[0]=='/추가'){
+		org.jsoup.Jsoup.connect(api_server + '/newword/' +args[1]+" "+args[2] + " "+room).ignoreContentType(true).get().text();
+		replier.reply(args[1]+" 단어가 추가 되었습니다");
 	}
 	
+	if(args[0]=='/삭제'){
+		org.jsoup.Jsoup.connect(api_server + '/delword/' +args[1]+ " "+room).ignoreContentType(true).get().text();
+		replier.reply(args[1]+" 단어가 삭제 되었습니다");
+	}
+	
+	if(args[0]=='/초기화'){
+		org.jsoup.Jsoup.connect(api_server + '/resetword/' +room).ignoreContentType(true).get().text();
+		replier.reply("단어 목록이 초기화 되었습니다.");
+	}
+
+	//Daily Repory
+	// if(packageName == "com.xfl.msgbot"){
+	// 	Api.replyRoom("test","msg");
+	// }
 
 }
 
