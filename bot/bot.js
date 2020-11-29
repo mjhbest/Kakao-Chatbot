@@ -16,9 +16,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 	if(msg=='hi'){
 		replier.reply("Hello! I'm chatbot!");
 	}
-	if(msg == '/gettime'){
-		output = org.jsoup.Jsoup.connect(api_server + msg).ignoreContentType(true).get().text();	
+	if(msg == '/시간'){
+		output = org.jsoup.Jsoup.connect(api_server + '/gettime').ignoreContentType(true).get().text();	
 		replier.reply(output);
+	}
+
+	if(msg == '/시작'){
+		org.jsoup.Jsoup.connect(api_server + '/' +room).ignoreContentType(true).get().text();
+		replier.reply("측정을 시작합니다");
+	}
+
+	if(msg.startsWith('/단어추가')){
+		org.jsoup.Jsoup.connect(api_server + '/' +room).ignoreContentType(true).get().text();
 	}
 	
 
