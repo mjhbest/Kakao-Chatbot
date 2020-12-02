@@ -2,6 +2,13 @@ const scriptName = "chatbot";
 let start = 0;
 var scores = [];
 var bads = [];
+var words = [['군무새', 1.89, 1.29, '성'], ['김치녀', 2.77, 1.04, '인종'],
+	['꽃뱀', 2.44, 1.46, '성'] , ['여직원', 1.18, 1.27, '성'], ['여의사', 1.18, 1.27, '성'], 
+	['맘충', 2.10, 1.44, '성'], ['한남충', 2.8, 1.19, '성'], ['김여사', 2.34, 1.47, '성'],
+	['개저씨', 2.23, 1.06, '성'], ['꼴페미', 2.81, 1.38, '성'], ['뚱녀', 2.55, 1.24, '성'], 
+	['성괴', 1.97, 1.53, '성'], ['여적여', 2.2, 1.39, '성'], ['엠창', 2.23, 1.56, '성'], 
+	['걸레', 2.] ]
+
 /**
 * (string) room
 * (string) sender
@@ -22,6 +29,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 		output = org.jsoup.Jsoup.connect(api_server + '/gettime').ignoreContentType(true).get().text();	
 		replier.reply(output);
 	}
+
+	// 단어 detection 
 
 	
 	//방 목록 단어 관리
