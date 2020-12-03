@@ -5,6 +5,7 @@ sys.path.insert(0,os.getcwd()+"/app")
 
 import app_time
 from word_collector import *
+import articles_recommendation
 
 
 
@@ -23,6 +24,11 @@ def init():
 @app.route('/gettime', methods = ['GET'])
 def time_app():
 	return jsonify(app_time.time()) 
+
+# article recommendation 
+@app.route('/getarticle/<word>', methods = ['GET'])
+def get_article(word):
+	return articles_recommendation(get_article(word))
 
 #방 생성
 @app.route('/newroom/<room>')
