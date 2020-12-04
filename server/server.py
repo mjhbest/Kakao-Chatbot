@@ -5,7 +5,7 @@ sys.path.insert(0,os.getcwd()+"/app")
 
 import app_time
 from word_collector import *
-
+from word_detector import *
 
 
 app = Flask(__name__)
