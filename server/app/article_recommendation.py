@@ -6,7 +6,7 @@ import pickle
 import os
 
 
-
+file_dir = "../data/articles/"
 """
 메인함수 
 input: 혐오표현 단어 
@@ -16,7 +16,7 @@ def get_article(target_word) :
 
     link = ''
 
-    if os.path.isfile('./articles/'+str(target_word)+'.pickle') : # 저장된 파일이 있을 때
+    if os.path.isfile(file_dir+str(target_word)+'.pickle') : # 저장된 파일이 있을 때
         link = get_from_saved_file(target_word)
         # print("recommended news: ", link, '\n')
     else:  # 저장된 파일 없을 때 
@@ -32,7 +32,7 @@ output: 혐오표현 단어 관련 기사 링크 1개
 """
 def get_from_saved_file (target_word):
 
-    filename = './articles/' + str(target_word) + '.pickle'
+    filename = file_dir + str(target_word) + '.pickle'
 
     with open(filename, 'rb') as f: 
         saved_articles = pickle.load(f)
@@ -98,7 +98,7 @@ def crawling_and_save (target_word):
     saved_articles['count'] = len(news_list)
     saved_articles['articles'] = news_list
 
-    with open('./articles/' + str(target_word) + ".pickle", 'wb') as f:
+    with open(file_dir + str(target_word) + ".pickle", 'wb') as f:
         pickle.dump(saved_articles, f)
 
     # print("initial count: ", len(news_list), "\n" )

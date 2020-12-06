@@ -1,7 +1,4 @@
 const scriptName = "chatbot";
-let start = 0;
-var scores = [];
-var bads = [];
 /**
 * (string) room
 * (string) sender
@@ -11,7 +8,7 @@ var bads = [];
 * (string) imageDB.getProfileBase64()
 * (string) packageName
 */
-const api_server = 'http://e8a59214407f.ngrok.io';
+const api_server = 'http://9aeb798622a4.ngrok.io';
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
 	var args = msg.split(' ');
 
@@ -21,7 +18,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 	if(msg == '/시간'){
 		output = org.jsoup.Jsoup.connect(api_server + '/gettime').ignoreContentType(true).get().text();	
 		replier.reply(output);
-	}
+	}		
 
 	
 	//방 목록 단어 관리
@@ -37,7 +34,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 	}
 
 	// 차단 단어 단어 관리
-	if(args[0]=='/추가'){
+	if(args[0]=='/추가'){	
 		org.jsoup.Jsoup.connect(api_server + '/newword/' +args[1]+" "+args[2] + " "+room).ignoreContentType(true).get().text();
 		replier.reply(args[1]+" 단어가 추가 되었습니다");
 	}
@@ -52,10 +49,24 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 		replier.reply("단어 목록이 초기화 되었습니다.");
 	}
 
-	//Daily Repory
-	// if(packageName == "com.xfl.msgbot"){
-	// 	Api.replyRoom("test","msg");
-	// }
+	//게임
+	if(msg == '/game-start'){
+		output = org.jsoup.Jsoup.connect(api_server + '/startgame/'+room).ignoreContentType(true).get().text();
+		replier.replier(output);
+	}
+
+	if(msg == '/game-end'){
+		output = org.jsoup.Jsoup.connect(api_server + '/startgame/'+room).ignoreContentType(true).get().text();
+		replier.replier(output);
+	}
+
+	output = org.jsoup.Jsoup.connect(api_server + '/detect/'+room+'_'+msg).ignoreContentType(true).get().text();
+	if(output != undefined){
+		replier.replier(output);	
+	}
+
+
+
 
 }
 

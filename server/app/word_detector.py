@@ -9,7 +9,7 @@ import gzip
 surveyFile = os.getcwd() + '/../data/surveyData.pickle'
 roomFile = os.getcwd() + "/../data/roomData.pickle"
 
-class ChatRoom():
+class Room():
     def __init__(self,room):
             self.roomName = room
             self.wordList = []
@@ -24,28 +24,21 @@ class ChatRoom():
     def add_word(self,word,score = 0):
             self.wordList[word] = score
 
-    def add_used_words(self, word):
-            if word in self.used_words.keys:
-                self.used_words[word] += 1 
-
-            else:
-                self.used_words[word] = 1
-    def clear_used_words(self):
-            self.used_words = []
-
-
-
+    
 def detect(room, msg):
     with gzip.open(roomFile,'rb') as f:
-		    data = pickle.load(f)
+	    data = pickle.load(f)
 
     if room in data.keys():
-		    room_words = data[room].wordList
+	    room_words = data[room].wordList
 
     nouns = hannanum.nouns(msg)
     for i in nouns:
-        if i in room_words.keys: 
+        if i in room_words.keys(): 
             data[room].add_used_words(i)
+
+    with gzip.open(roomFile,'wb') as f:
+        pickle.dump(data,f)
 
     
 def alarm(room): 
@@ -69,4 +62,11 @@ def alarm(room):
         return response
     else:
         return ("Error! Not 00:00 AM")
+
+if __name__ == '__main__':
+    with gzip.open(os.getcwd() + "/../../data/roomData.pickle",'rb') as f:
+        data = pickle.load(f)
+
+    detect('DEBUG ROOM','군무새 싫어')
+        
 
