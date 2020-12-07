@@ -73,12 +73,15 @@ def del_room(room):
 		pickle.dump(data,f)
 
 
-def new_word(word , score , room):
+def new_word(room, word,score):
 	with gzip.open(roomFile,'rb') as f:
 		data = pickle.load(f)
-
+	
+	real_score = score
+	if score == 'undefined':
+		real_score = '0'
 	if room in data.keys():
-		data[room].add_word(Word(word,score))
+		data[room].add_word(Word(word,real_score))
 
 	with gzip.open(roomFile,'wb') as f:
 		pickle.dump(data,f)
@@ -131,12 +134,12 @@ def init_roomData():
 
 if __name__ == '__main__':
 	make_survey_pickle()
-	init_roomData()
+	# init_roomData()
 
-	new_room("1")
-	new_word("Fuck","10","1")
+	# new_room("1")
+	# new_word("Fuck","10","1")
 
-	with gzip.open(os.getcwd() + "/../../data/roomData.pickle",'rb') as f:
-		data = pickle.load(f)
+	# with gzip.open(os.getcwd() + "/../../data/roomData.pickle",'rb') as f:
+	# 	data = pickle.load(f)
 
 

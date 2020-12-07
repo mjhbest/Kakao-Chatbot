@@ -44,12 +44,12 @@ def newword(word_data):
 	word = args[0]
 	score = args[1]
 	room = ""
+
 	for i in range(2,len(args)):
 		if(len(room)!=0):
 			room+= " "
 		room += args[i]
-
-	new_word(word,score,room)
+	new_word(room,word,score)
 	return word_data
 
 @app.route('/delword/<word_data>', methods = ['GET'])

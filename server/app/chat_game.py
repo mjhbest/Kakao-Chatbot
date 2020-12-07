@@ -41,30 +41,42 @@ def end_game(room):
 def check_msg(room,msg):
 	with gzip.open(roomFile,'rb') as f:
 		data = pickle.load(f)
+	detect = []
 
-	detect = None
 	if room in data.keys():
-	    room_words = data[room].wordDict
+		room_words = data[room].wordDict
 
-	nouns = hannanum.nouns(msg)
-	for noun in nouns:
-		if noun in room_words.keys():
-			print(noun)
-			room_words[noun].used()
-			detect = noun
-
-	if data[room].life != -1: #if game playing
-		if detect != None:
+	morphs = hannanum.morphs(msg)
+	for morph in morphs:
+		for word in room_words.keys():
+			if room_words[word].word in morph:
+				room_words[word].used()
+				detect.append(word)
+		
+	result = ""
+	if data[room].life != -1: 
+		if len(detect) != 0:
 			data[room].life -= 1
+			
+			text = ""
+			for bad in detect:
+				text += bad + ","
+
 			if data[room].life == 0:
 				data[room].life = -1
-				result = "{0} : Game Over".format(detect)
+				result += text
+				result += " : Game Over".format(detect)
 			else:
-				result = "{0} : Life가 {1}개 남았습니다".format(detect,data[room].life)
-
-	else:
-		result = ""
-
+				result += text
+				result += " : Life가 {0}개 남았습니다\n".format(data[room].life)
+				
+				for bad in detect:
+					s = room_words[bad].score
+					if s == '0':
+						result += "사용하신 단어 '{0}'는 점수가 지정되지 않았네요!".format(bad)
+					else:
+						result += "사용하신 단어 '{0}'는 {1}의 혐오가 있는 단어입니다!".format(bad,s)
+	print(result)
 	with gzip.open(roomFile,'wb') as f:
 		pickle.dump(data,f)
 	
